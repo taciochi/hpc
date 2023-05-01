@@ -49,7 +49,7 @@ int main(int argc, char *argv[]){
     output_data = (float *) malloc(product(output_dims, 3) * sizeof(float));
 
     // call stencil function
-    stencil(input_data, *input_dims[1], *input_dims[2], kernel_data, *kernel_dims[0], output_data, *input_dims[0]);
+    stencil(input_data, input_dims[1], input_dims[2], kernel_data, kernel_dims[0], output_data, input_dims[0]);
 
     // write output data to file
     write_to_output_file("output_2_5_5x3.dat", output_data, output_dims, 3);
