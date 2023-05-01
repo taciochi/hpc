@@ -8,6 +8,7 @@ void stencil_omp(float* inputvec, int m, int n, float* filtervec, int k, float* 
     float (input)[m][n] = malloc((float (*)[m][n])inputvec);
     float (filter)[k] = malloc((float (*)[k])filtervec);
     float (output)[m][n] = malloc((float (*)[m][n])outputvec);
+    
     // Compute boundary region size
     int blower = floor((k - 1) / 2.0);
     int bupper = ceil((k - 1) / 2.0);
