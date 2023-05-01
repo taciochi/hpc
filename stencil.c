@@ -61,8 +61,8 @@ void stencil(float* inputvec, int m, int n, float* filtervec, int k, float* outp
                     output[i][j][l] = input[i][j][l];
                 } else {
                     float sum = 0.0f;
-                    for (int x=0; x<k; x++) {
-                        for (int y=0; y<k; y++) {
+                    for (x=0; x<k; x++) {
+                        for (y=0; y<k; y++) {
                             sum += input[i][j-km+1+x][l-km+1+y] * filter[x][y];
                         }
                     }
