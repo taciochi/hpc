@@ -3,7 +3,7 @@
 #include<math.h>
 #include<string.h>
 #include<stdbool.h>
-#include "stencil.h"
+#include "stencil.c"
 
 int *read_dims(char *filename);
 float * read_array(char *filename, int *dims, int num_dims);
