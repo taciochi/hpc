@@ -1,2 +1,0 @@
-stencil-omp-gcc.exe: main-serial.c stencil.c
-    gcc -fopenmp -o stencil-omp-gcc.exe main-serial.c stencil.c
