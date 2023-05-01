@@ -14,7 +14,7 @@ void stencil(float* inputvec, int m, int n, float* filtervec, int k, float* outp
     int bupper = ceil((k - 1) / 2.0);
 
     // Process each batch
-    // #pragma omp parallel for
+    #pragma omp parallel for
     for (batch = 0; batch < b; batch++) {
         // Copy boundary elements from input to output
         // #pragma omp for collapse(2)
