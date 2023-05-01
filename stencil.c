@@ -1,7 +1,7 @@
 #include <omp.h>
 #include <math.h>
 
-int main() {return 0;}
+int main(int argc, char *argv[]) {return 0;}
 
 void stencil(float* inputvec, int m, int n, float* filtervec, int k, float* outputvec, int b) {
     int batch, i, j, x, y;
