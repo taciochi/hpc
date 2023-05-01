@@ -1,7 +1,7 @@
 #include <omp.h>
 #include <math.h>
 
-void stencil_omp(float* inputvec, int m, int n, float* filtervec, int k, float* outputvec, int b) {
+void stencil(float* inputvec, int m, int n, float* filtervec, int k, float* outputvec, int b) {
     int batch, i, j, x, y;
 
     // Convert input, filter, and output to 3D arrays
