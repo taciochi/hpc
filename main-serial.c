@@ -62,7 +62,7 @@ int main(int argc, char *argv[]){
     free(output_data);
 
     dtime = dtime - omp_get_wtime(); // total run time
-    print("OpenMP stencil %d", dtime);
+    printf("OpenMP stencil %d", dtime);
 
     return 0;
 }
