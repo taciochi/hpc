@@ -3,12 +3,13 @@
 #include<math.h>
 #include<string.h>
 #include<stdbool.h>
-#include "stencil.c"
+#include<mpi.h>
 
 int *read_dims(char *filename);
 float * read_array(char *filename, int *dims, int num_dims);
 void *write_to_output_file(char *filename, float *output, int *dims, int num_dims);
 long int product(int *array, int n);
+
 
 int main(int argc, char *argv[]){
     
@@ -16,8 +17,8 @@ int main(int argc, char *argv[]){
     
     /*Here is an example of using malloc to allocate memory for an array
     THIS SHOULD NOT BE THE FIRST LINE OF CODE*/
-    // int *input_dimensions;
-    // input_dimensions = malloc(input_num_of_dimensions*sizeof(int));
+    int *input_dimensions;
+    input_dimensions = malloc(input_num_of_dimensions*sizeof(int));
     /*
     This array stores the dimensions of the input.
     input_dimensions[0] would store the batch size
@@ -28,43 +29,6 @@ int main(int argc, char *argv[]){
     When allocating memory, it must be freed at the end of the program. e.g. free(input_dimensions);
     */
     
-    dtime = omp_get_wtime(); // start time
-    int * input_dims;
-    int * kernel_dims;
-    float * output_data;
-    float * input_data;
-    float * kernel_data;
-
-
-    // read input and kernel dimensions
-    input_dims = read_dims("input_64_512_960.dat");
-    kernel_dims = read_dims("kernel_5.dat");
-
-    // read input and kernel data
-    input_data = read_array("input_64_512_960.dat", input_dims, input_dims[0]);
-    kernel_data = read_array("kernel_5.dat", kernel_dims, kernel_dims[0]);
-
-    // allocate memory for the output data
-    int output_dims[] = {input_dims[1], input_dims[2], input_dims[3]};
-    output_data = (float *) malloc(product(output_dims, 3) * sizeof(float));
-
-    // call stencil function
-    stencil(input_data, input_dims[1], input_dims[2], kernel_data, kernel_dims[0], output_data, input_dims[0]);
-
-    // write output data to file
-    write_to_output_file("output_64_512_960x3.dat", output_data, output_dims, 3);
-
-    // free memory
-    free(input_dims);
-    free(kernel_dims);
-    free(input_data);
-    free(kernel_data);
-    free(output_data);
-
-    dtime = dtime - omp_get_wtime(); // total run time
-    print("OpenMP stencil %d", dtime);
-
-    return 0;
 }
 
 /*Code for reading and writing to the files*/
