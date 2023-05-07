@@ -8,7 +8,10 @@
 module load compilers/intel/2019u5
 module load mpi/intel-mpi/2019u5/bin
 
-make
+make gccserial
+make gcccomplete
+make iccserial
+make icccomplete
 
 threads=(1 2 4 8 12 16 32)
 
