@@ -12,7 +12,7 @@ void stencil(float* inputvec, int m, int n, float* filtervec, int k, float* outp
     float (*filter)[k] = (float (*)[k]) filtervec;
     float (*output)[m][n] = (float (*)[m][n]) outputvec;
 
-    #pragma omp parallel for schedule(dynamic) collapse(2)
+    #pragma omp parallel for schedule(dynamic)
     for (i=0; i<b; i++) {
         for (j=0; j<m; j++) {
             for (l=0; l<n; l++) {
