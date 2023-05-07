@@ -17,7 +17,7 @@ threads=(1 2 4 8 12 16 32)
 
 for thread_conunt in "${threads[@]}"
 do
-    echo "Runnin gcc OpenMP stencil with $thread_count threads:"
+    echo "Runnin gcc OpenMP stencil with {$thread_count} threads:"
     export OMP_NUM_THREADS=$thread_conunt
     ./stencil-omp-gcc.exe
     echo "---"
@@ -26,7 +26,7 @@ done
 
 for thread_conunt in "${threads[@]}"
 do
-    echo "Runnin icc OpenMP stencil with $thread_count threads:"
+    echo "Runnin icc OpenMP stencil with {$thread_count} threads:"
     export OMP_NUM_THREADS=$thread_conunt
     ./stencil-omp-icc.exe
     echo "---"
