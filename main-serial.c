@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
     When allocating memory, it must be freed at the end of the program. e.g. free(input_dimensions);
     */
     
-    dtime = omp_get_wtime(); // start time
+    double dtime = omp_get_wtime(); // start time
     int * input_dims;
     int * kernel_dims;
     float * output_data;

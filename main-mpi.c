@@ -6,29 +6,61 @@
 #include<mpi.h>
 
 int *read_dims(char *filename);
-float * read_array(char *filename, int *dims, int num_dims);
-void *write_to_output_file(char *filename, float *output, int *dims, int num_dims);
+float *read_array(char *filename, int *dims, int num_dims);
+void write_to_output_file(char *filename, float *output, int *dims, int num_dims);
 long int product(int *array, int n);
-
+void stencil(float* inputvec, int m, int n, float* filtervec, int k, float* output, int b);
 
 int main(int argc, char *argv[]){
-    
-    /*Your code goes here*/
-    
-    /*Here is an example of using malloc to allocate memory for an array
-    THIS SHOULD NOT BE THE FIRST LINE OF CODE*/
-    int *input_dimensions;
-    input_dimensions = malloc(input_num_of_dimensions*sizeof(int));
-    /*
-    This array stores the dimensions of the input.
-    input_dimensions[0] would store the batch size
-    input_dimensions[1] would store m
-    input_dimensions[2] would store n
-    input_num_of_dimensions is how many dimensions there are, which read_dims() returns at position [0].
-    In the case for the input matrix, it has 3 dimensions. So memory is allocated for 3 integers(an array of 3 elements)
-    When allocating memory, it must be freed at the end of the program. e.g. free(input_dimensions);
-    */
-    
+    int rank, size;
+    MPI_Init(&argc, &argv);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+    char *input_file = "input_64_512_960.dat";
+    char *output_file = "output_64_512_960x5.dat";
+    char *filter_file = "kernel_5.dat";
+
+    int *input_dimensions = read_dims(input_file);
+    int input_num_of_dimensions = input_dimensions[0];
+    int *input_dims = &input_dimensions[1];
+    int input_size = product(input_dims, input_num_of_dimensions);
+
+    float *input = read_array(input_file, input_dims, input_num_of_dimensions);
+
+    int *filter_dimensions = read_dims(filter_file);
+    int filter_num_of_dimensions = filter_dimensions[0];
+    int *filter_dims = &filter_dimensions[1];
+    int filter_size = product(filter_dims, filter_num_of_dimensions);
+
+    int b = input_dims[0];
+    int m = input_dims[1];
+    int n = input_dims[2];
+    int k = filter_dims[1];
+
+    float *output = malloc(sizeof(float) * input_size);
+
+    double start_time = MPI_Wtime();
+    stencil(input, m, n, filter, k, output, b);
+    double end_time = MPI_Wtime();
+
+    if (rank == 0) {
+        write_to_output_file(output_file, output, input_dims, input_num_of_dimensions);
+    }
+
+    free(input_dimensions);
+    free(input);
+    free(filter_dimensions);
+    free(filter);
+    free(output);
+
+    MPI_Finalize();
+
+    if (rank == 0) {
+        printf("Time taken for %d threads: %f seconds\n", size, end_time - start_time);
+    }
+
+    return 0;
 }
 
 /*Code for reading and writing to the files*/
@@ -99,15 +131,15 @@ float * read_array(char *filename, int *dims, int num_dims) {
 }
 
 /*Writes to the output file*/
-void *write_to_output_file(char *filename, float *output, int *dims, int num_dims){
+void write_to_output_file(char *filename, float *output, int *dims, int num_dims){
     FILE *file = fopen(filename,"w");
     int i;
     
     if(file == NULL) {
         printf("Unable to open file: %s", filename);
-        return NULL;
+        return;
     }
-    printf("File opened, writing dims");
+
     if (file != NULL) {
         for(i=0; i<num_dims; i++) {
             fprintf(file, "%d ", dims[i]);
@@ -117,10 +149,11 @@ void *write_to_output_file(char *filename, float *output, int *dims, int num_dim
       
     long int total_elements = product(dims, num_dims);
       
-    printf("Writing output data");
     for(i=0; i<total_elements; i++) {
         fprintf(file, "%.7f ", output[i]);
     }
+
+    fclose(file);
 }
 
 /*Returns the number of elements by multiplying the dimensions*/
@@ -131,4 +164,34 @@ long int product(int *array, int n) {
         product *= array[i];
     }
     return product;
+}
+
+/*Performs the stencil operation on the input array using the filter array*/
+void stencil(float* inputvec, int m, int n, float* filtervec, int k, float* output, int b) {
+    int i, j, l, p, q;
+    int h = k / 2;
+
+    float* input = inputvec;
+    float* filter = filtervec;
+    float* output = outputvec;
+
+    for (p=0; p<b; p++) {
+        for (i=rank; i<m; i+=size) {
+            forj=0; j<n; j++) {
+                float sum = 0.0f;
+                for (l=-; l<=h; l {
+                    for (q=-h; q<=h q++) {
+                        int ii = i + l;
+                        int jj = j + q;
+                        if (ii >= 0 && ii < m && jj >= 0 && jj < n) {
+                            sum += input[p*m*n + ii*n + jj] * filter[(l+h)*k + (q+h)];
+                        }
+                    }
+                }
+                output[p*m*n + i*n + j] = sum;
+            }
+        }
+    }
+
+    MPI_Allgather(MPI_IN_PLACE, 0, MPI_DATATYPE_NULL, output, input_size/size, MPI_FLOAT, MPI_COMM_WORLD);
 }
