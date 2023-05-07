@@ -1,5 +1,3 @@
-# Makefile
-
 CC_GCC = gcc
 CC_ICC = icc
 MPI_CC_GCC = mpicc
