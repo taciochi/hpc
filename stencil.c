@@ -23,7 +23,9 @@ void stencil(float *inputvec, int m, int n, float *filtervec, int k, float *outp
                         int filter_x = x;
                         int filter_y = y;
 
-                        output[batch][i][j] += input[batch][input_i][input_j] * filter[filter_x][filter_y];
+                        if (input_i >= 0 && input_i < m && input_j >= 0 && input_j < n) {
+                            output[batch][i][j] += input[batch][input_i][input_j] * filter[filter_x][filter_y];
+                        }
                     }
                 }
             }
