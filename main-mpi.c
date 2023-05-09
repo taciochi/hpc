@@ -284,15 +284,15 @@ float * read_array(char *filename, int *dims, int num_dims) {
 }
 
 /*Writes to the output file*/
-void write_to_output_file(char *filename, float *output, int *dims, int num_dims){
+void *write_to_output_file(char *filename, float *output, int *dims, int num_dims){
     FILE *file = fopen(filename,"w");
     int i;
     
     if(file == NULL) {
         printf("Unable to open file: %s", filename);
-        return;
+        return NULL;
     }
-
+    printf("File opened, writing dims");
     if (file != NULL) {
         for(i=0; i<num_dims; i++) {
             fprintf(file, "%d ", dims[i]);
@@ -302,11 +302,10 @@ void write_to_output_file(char *filename, float *output, int *dims, int num_dims
       
     long int total_elements = product(dims, num_dims);
       
+    printf("Writing output data");
     for(i=0; i<total_elements; i++) {
         fprintf(file, "%.7f ", output[i]);
     }
-
-    fclose(file);
 }
 
 /*Returns the number of elements by multiplying the dimensions*/
@@ -327,7 +326,6 @@ void stencil(float* inputvec, int m, int n, float* filtervec, int k, float* outp
 
     float* input = inputvec;
     float* filter = filtervec;
-    float* output = outputvec;
 
     int rank, size;
     if (MPI_Comm_rank(MPI_COMM_WORLD, &rank) != MPI_SUCCESS) {
