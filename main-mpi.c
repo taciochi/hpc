@@ -33,6 +33,8 @@ int main(int argc, char *argv[]){
     int *filter_dims = &filter_dimensions[1];
     int filter_size = product(filter_dims, filter_num_of_dimensions);
 
+    float *filter = read_array(filter_file, filter_dims, filter_num_of_dimensions);
+
     int b = input_dims[0];
     int m = input_dims[1];
     int n = input_dims[2];
@@ -170,17 +172,23 @@ long int product(int *array, int n) {
 void stencil(float* inputvec, int m, int n, float* filtervec, int k, float* output, int b) {
     int i, j, l, p, q;
     int h = k / 2;
+    int input_size = m * n * sizeof(float);
 
     float* input = inputvec;
     float* filter = filtervec;
     float* output = outputvec;
 
+    int rank, size;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+
     for (p=0; p<b; p++) {
         for (i=rank; i<m; i+=size) {
-            forj=0; j<n; j++) {
+            for (j=0; j<n; j++) {
                 float sum = 0.0f;
-                for (l=-; l<=h; l {
-                    for (q=-h; q<=h q++) {
+                for (l=-h; l<=h; l++) {
+                    for (q=-h; q<=h; q++) {
                         int ii = i + l;
                         int jj = j + q;
                         if (ii >= 0 && ii < m && jj >= 0 && jj < n) {
