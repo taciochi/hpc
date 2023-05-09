@@ -1,6 +1,3 @@
-#include <omp.h>
-#include <math.h>
-
 void stencil(float* inputvec, int m, int n, float* filtervec, int k, float* outputvec, int b) {
     int i, j, l, x, y;
 
@@ -22,7 +19,9 @@ void stencil(float* inputvec, int m, int n, float* filtervec, int k, float* outp
                     float sum = 0.0f;
                     for (x=0; x<k; x++) {
                         for (y=0; y<k; y++) {
-                            sum += input[i][j-km+1+x][l-km+1+y] * filter[x][y];
+                            if (j-km+1+x >= 0 && j-km+1+x < m && l-km+1+y >= 0 && l-km+1+y < n) {
+                                sum += input[i][j-km+1+x][l-km+1+y] * filter[x][y];
+                            }
                         }
                     }
                     output[i][j][l] = sum;
@@ -30,4 +29,4 @@ void stencil(float* inputvec, int m, int n, float* filtervec, int k, float* outp
             }
         }
     }
-} //comment
+}
