@@ -9,7 +9,7 @@ LFLAGS_ICC = -qopenmp
 gccserial: main-serial.c stencil.c
 	$(CC_GCC) $(LFLAGS_GCC) $^ -o stencil-omp-gcc.exe -lm
 
-gcccomplete: main-mpi.c
+gcccomplete: main-mpi.c stencil.c
 	$(MPI_CC_GCC) $^ -o stencil-complete-gcc.exe
 
 iccserial: main-serial.c
