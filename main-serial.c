@@ -54,7 +54,7 @@ int main(int argc, char *argv[]){
     stencil(input_data, input_dims[1], input_dims[2], kernel_data, kernel_dims[0], output_data, input_dims[0]);
 
     // write output data to file
-    write_to_output_file("output_64_512_960x3.dat", input_dims, input_dims[0], 3);
+    write_to_output_file("output_64_512_960x3.dat", output_data, input_dims, input_dims[0]);
 
     // free memory
     free(input_dims);
