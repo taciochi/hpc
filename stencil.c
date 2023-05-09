@@ -1,6 +1,7 @@
 #include <omp.h>
 
 void stencil(float input_vec, int m, int n, floatfilter_vec, int k, float output_vec, int b) {
+    int b_idx, i, j;
     float (input)[m][n] = (float ()[m][n]) input_vec;
     float (filter)[k] = (float ()[k]) filter_vec;
     float (output)[m][n] = (float ()[m][n]) output_vec;
