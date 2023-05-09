@@ -24,14 +24,14 @@ do
 
 done
 
-for i in "${threads[@]}"
-do
-    echo "Runnin icc OpenMP stencil with $i threads:"
-    export OMP_NUM_THREADS=$i
-    ./stencil-omp-icc.exe
-    echo "---"
+# for i in "${threads[@]}"
+# do
+#     echo "Runnin icc OpenMP stencil with $i threads:"
+#     export OMP_NUM_THREADS=$i
+#     ./stencil-omp-icc.exe
+#     echo "---"
 
-done
+# done
 
 # for thread_conunt in "${threads[@]}"
 # do
