@@ -1,12 +1,11 @@
 #include <omp.h>
-#include <math.h>
 
 void stencil(float *inputvec, int m, int n, float *filtervec, int k, float *outputvec, int b) {
     int batch, i, j, x, y;
 
-    int km = floor(k + 1) / 2;
-    int blower = floor(k - 1) / 2;
-    int bupper = ceil(k - 1) / 2;
+    int km = (k + 1) / 2;
+    int blower = (k - 1) / 2;
+    int bupper = k / 2;
 
     float (*input)[m][n] = (float(*)[m][n])inputvec;
     float (*filter)[k] = (float(*)[k])filtervec;
