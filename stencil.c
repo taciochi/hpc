@@ -1,10 +1,10 @@
 #include <omp.h>
 
-void stencil(float input_vec, int m, int n, floatfilter_vec, int k, float output_vec, int b) {
+void stencil(float* input_vec, int m, int n, float* filter_vec, int k, float* output_vec, int b) {
     int b_idx, i, j, p, q;
-    float (input)[m][n] = (float ()[m][n]) input_vec;
-    float (filter)[k] = (float ()[k]) filter_vec;
-    float (output)[m][n] = (float ()[m][n]) output_vec;
+    float (*input)[m][n] = (float ()[m][n]) input_vec;
+    float (*filter)[k] = (float ()[k]) filter_vec;
+    float (*output)[m][n] = (float ()[m][n]) output_vec;
 
     int km = (k + 1) / 2;
     int blower = (k - 1) / 2;
@@ -19,7 +19,7 @@ void stencil(float input_vec, int m, int n, floatfilter_vec, int k, float output
                 for (p = 0; p < k; p++) {
                     #pragma omp simd reduction(+:sum)
                     for (q = 0; q < k; q++) {
-                        sum += input[b_idx][i + p - km][j + q - km] filter[p][q];
+                        sum += input[b_idx][i + p - km][j + q - km] * filter[p][q];
                     }
                 }
                 output[b_idx][i][j] = sum;
