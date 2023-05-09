@@ -4,6 +4,7 @@
 #include<string.h>
 #include<stdbool.h>
 #include "stencil.c"
+#include "<omp.h>"
 
 int *read_dims(char *filename);
 float * read_array(char *filename, int *dims, int num_dims);
