@@ -3,13 +3,14 @@
 #include<math.h>
 #include<string.h>
 #include<stdbool.h>
-#include "stencil.c"
 #include <omp.h>
 
 int *read_dims(char *filename);
 float * read_array(char *filename, int *dims, int num_dims);
 void *write_to_output_file(char *filename, float *output, int *dims, int num_dims);
 long int product(int *array, int n);
+void stencil(float *inputvec, int m, int n, float *filtervec, int k, float *outputvec, int b);
+
 
 int main(int argc, char *argv[]){
     
