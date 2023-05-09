@@ -33,10 +33,10 @@ done
 
 # done
 
-# for i in "${threads[@]}"
-# do
-#     echo "Runnin gcc MPI stencil with $i ranks:"
-#     mpiexec -n $i ./stencil-complete-gcc.exe
-#     echo "---"
+for i in "${threads[@]}"
+do
+    echo "Runnin gcc MPI stencil with $i ranks:"
+    mpiexec -n $i ./stencil-complete-gcc.exe
+    echo "---"
 
-# done
+done

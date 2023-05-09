@@ -11,7 +11,7 @@ void stencil(float *inputvec, int m, int n, float *filtervec, int k, float *outp
     float (*filter)[k] = (float(*)[k])filtervec;
     float (*output)[m][n] = (float(*)[m][n])outputvec;
 
-    #pragma omp parallel for collapse(2)
+    #pragma omp parallel for
     for (batch = 0; batch < b; batch++) {
         for (i = blower; i < m - bupper; i++) {
             for (j = blower; j < n - bupper; j++) {
