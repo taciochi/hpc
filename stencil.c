@@ -1,4 +1,4 @@
-#include "<omp.h>"
+#include <omp.h>
 
 void stencil(float* inputvec, int m, int n, float* filtervec, int k, float* outputvec, int b) {
     int i, j, l, x, y;
