@@ -30,4 +30,4 @@ void stencil(float* inputvec, int m, int n, float* filtervec, int k, float* outp
             }
         }
     }
-}
+} //comment
