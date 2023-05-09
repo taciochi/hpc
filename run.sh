@@ -13,7 +13,7 @@ make gcccomplete
 # make iccserial
 # make icccomplete
 
-threads=(1 2 4 8 12 16 32)
+threads=(1 2 4 8 16 32)
 
 for i in "${threads[@]}"
 do

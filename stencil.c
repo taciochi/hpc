@@ -1,7 +1,7 @@
 #include <omp.h>
 
 void stencil(float *inputvec, int m, int n, float *filtervec, int k, float *outputvec, int b) {
-    int i, j, l, x, y;
+    int batch, i, j, x, y;
 
     int km = (k + 1) / 2;
     int blower = (k - 1) / 2;
