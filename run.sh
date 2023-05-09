@@ -18,7 +18,7 @@ threads=(1 2 4 8 12 16 32)
 for i in "${threads[@]}"
 do
     echo "Runnin gcc OpenMP stencil with $i threads:"
-    export OMP_NUM_THREADS=$i
+    # export OMP_NUM_THREADS=$i
     ./stencil-omp-gcc.exe
     echo "---"
 
