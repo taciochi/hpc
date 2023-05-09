@@ -43,7 +43,7 @@ done
 
 for i in "${threads[@]}"
 do
-    echo "Runnin gcc MPI stencil with $i ranks:"
+    echo "Runnin icc MPI stencil with $i ranks:"
     mpiexec -n $i ./stencil-complete-icc.exe
     echo "---"
 
