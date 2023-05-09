@@ -11,14 +11,14 @@ void stencil(float input_vec, int m, int n, floatfilter_vec, int k, float output
     int bupper = k / 2;
 
     #pragma omp parallel for shared(input, filter, output) private(b_idx, i, j, p, q) schedule(static)
-    for (int b_idx = 0; b_idx < b; b_idx++) {
-        for (int i = blower; i < m - bupper; i++) {
+    for (b_idx = 0; b_idx < b; b_idx++) {
+        for (i = blower; i < m - bupper; i++) {
             #pragma omp simd private(sum)
-            for (int j = blower; j < n - bupper; j++) {
+            for (j = blower; j < n - bupper; j++) {
                 float sum = 0.0;
-                for (int p = 0; p < k; p++) {
+                for (p = 0; p < k; p++) {
                     #pragma omp simd reduction(+:sum)
-                    for (int q = 0; q < k; q++) {
+                    for (q = 0; q < k; q++) {
                         sum += input[b_idx][i + p - km][j + q - km] filter[p][q];
                     }
                 }
@@ -28,26 +28,26 @@ void stencil(float input_vec, int m, int n, floatfilter_vec, int k, float output
     }
 
     #pragma omp parallel for shared(input, output) private(b_idx, i, j) schedule(static)
-    for (int b_idx = 0; b_idx < b; b_idx++) {
-        for (int i = 0; i < blower; i++) {
+    for (b_idx = 0; b_idx < b; b_idx++) {
+        for (i = 0; i < blower; i++) {
             #pragma omp simd
-            for (int j = 0; j < n; j++) {
+            for (j = 0; j < n; j++) {
                 output[b_idx][i][j] = input[b_idx][i][j];
             }
         }
-        for (int i = m - bupper; i < m; i++) {
+        for (i = m - bupper; i < m; i++) {
             #pragma omp simd
-            for (int j = 0; j < n; j++) {
+            for (j = 0; j < n; j++) {
                 output[b_idx][i][j] = input[b_idx][i][j];
             }
         }
-        for (int i = blower; i < m - bupper; i++) {
+        for (i = blower; i < m - bupper; i++) {
             #pragma omp simd
-            for (int j = 0; j < blower; j++) {
+            for (j = 0; j < blower; j++) {
                 output[b_idx][i][j] = input[b_idx][i][j];
             }
             #pragma omp simd
-            for (int j = n - bupper; j < n; j++) {
+            for (j = n - bupper; j < n; j++) {
                 output[b_idx][i][j] = input[b_idx][i][j];
             }
         }
