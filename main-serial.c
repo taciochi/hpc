@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
 
     // allocate memory for the output data
     int output_dims[] = {input_dims[1], input_dims[2], input_dims[3]};
-    output_data = (float *)malloc(product(output_dims, input_dims[0]) * sizeof(float));
+    output_data = (float *)malloc(product(output_dims, 3) * sizeof(float));
 
 
     // call stencil function
