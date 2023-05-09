@@ -9,7 +9,7 @@ module load compilers/intel/2019u5
 module load mpi/intel-mpi/2019u5/bin
 
 make gccserial
-# make gcccomplete
+make gcccomplete
 # make iccserial
 # make icccomplete
 
@@ -33,10 +33,10 @@ done
 
 # done
 
-# for thread_conunt in "${threads[@]}"
-# do
-#     echo "Runnin gcc MPI stencil with $thread_count ranks:"
-#     mpiexec -n "$thread_count" ./stencil-complete-gcc.exe
-#     echo "---"
+for thread_conunt in "${threads[@]}"
+do
+    echo "Runnin gcc MPI stencil with $thread_count ranks:"
+    mpiexec -n "$thread_count" ./stencil-complete-gcc.exe
+    echo "---"
 
-# done
+done
