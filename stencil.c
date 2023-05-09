@@ -11,7 +11,7 @@ void stencil(float *inputvec, int m, int n, float *filtervec, int k, float *outp
     float (*filter)[k] = (float(*)[k])filtervec;
     float (*output)[m][n] = (float(*)[m][n])outputvec;
 
-    #pragma omp parallel for private(batch, row, col, x, y) shared(output)
+    #pragma omp parallel for private(batch, row, col, x, y) reduction(+: output)
     for (batch = 0; batch < b; batch++) {
         for (row = blower; row < m - bupper; row++) {
             for (col = blower; col < n - bupper; col++) {
