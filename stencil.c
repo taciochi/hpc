@@ -11,22 +11,15 @@ void stencil(float *inputvec, int m, int n, float *filtervec, int k, float *outp
     float (*filter)[k] = (float(*)[k])filtervec;
     float (*output)[m][n] = (float(*)[m][n])outputvec;
 
-    #pragma omp parallel for collapse(3)
-    for (i = 0; i < b; i++) {
-        for (j = 0; j < m; j++) {
-            for (l = 0; l < n; l++) {
-                if (j < km - 1 + blower || j >= (m - km + 1 + bupper) || l < km - 1 + blower || l >= (n - km + 1 + bupper)) {
-                    output[i][j][l] = input[i][j][l];
-                } else {
-                    float sum = 0.0f;
-                    for (x = 0; x < k; x++) {
-                        for (y = 0; y < k; y++) {
-                            if (j - km + 1 + x >= 0 && j - km + 1 + x < m && l - km + 1 + y >= 0 && l - km + 1 + y < n) {
-                                sum += input[i][j - km + 1 + x][l - km + 1 + y] * filter[x][y];
-                            }
-                        }
+    #pragma omp parallel for collapse(2)
+    for (int batch = 0; batch < b; batch++) {
+        for (int i = blower; i < m - bupper; i++) {
+            for (int j = blower; j < n - bupper; j++) {
+                output[batch][i][j] = 0.0;
+                for (int x = 0; x < k; x++) {
+                    for (int y = 0; y < k; y++) {
+                        output[batch][i][j] += input[batch][i - blower + x][j - blower + y] * filter[x][y];
                     }
-                    output[i][j][l] = sum;
                 }
             }
         }
