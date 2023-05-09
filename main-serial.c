@@ -13,24 +13,7 @@ void stencil(float *inputvec, int m, int n, float *filtervec, int k, float *outp
 
 
 int main(int argc, char *argv[]){
-    
-    /*Your code goes here*/
-    
-    /*Here is an example of using malloc to allocate memory for an array
-    THIS SHOULD NOT BE THE FIRST LINE OF CODE*/
-    // int *input_dimensions;
-    // input_dimensions = malloc(input_num_of_dimensions*sizeof(int));
-    /*
-    This array stores the dimensions of the input.
-    input_dimensions[0] would store the batch size
-    input_dimensions[1] would store m
-    input_dimensions[2] would store n
-    input_num_of_dimensions is how many dimensions there are, which read_dims() returns at position [0].
-    In the case for the input matrix, it has 3 dimensions. So memory is allocated for 3 integers(an array of 3 elements)
-    When allocating memory, it must be freed at the end of the program. e.g. free(input_dimensions);
-    */
-    
-    double dtime = omp_get_wtime(); // start time
+    double dtime = omp_get_wtime(); // start time recording
     int * input_dims;
     int * kernel_dims;
     float * output_data;

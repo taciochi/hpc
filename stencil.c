@@ -15,7 +15,6 @@ void stencil(float *inputvec, int m, int n, float *filtervec, int k, float *outp
     for (batch = 0; batch < b; batch++) {
         for (i = blower; i < m - bupper; i++) {
             for (j = blower; j < n - bupper; j++) {
-                output[batch][i][j] = 0.0;
 
                 for (x = 0; x < k; x++) {
                     for (y = 0; y < k; y++) {
