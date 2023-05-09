@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
     kernel_data = read_array("kernel_5.dat", kernel_dims, kernel_dims[0]);
 
     // allocate memory for the output data
-    int output_dims[] = {input_dims[1], input_dims[2], input_dims[3]};
+    int output_dims[] = {input_dims[0], input_dims[1], input_dims[2]};
     output_data = (float *)malloc(product(output_dims, output_dims[0]) * sizeof(float));
 
 
